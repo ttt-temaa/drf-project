@@ -30,6 +30,22 @@ class CustomUser(AbstractUser):
         help_text="Загрузите изображение для профиля (необязательно).",
     )
 
+    groups = models.ManyToManyField(
+        "auth.Group",
+        related_name="customuser_set",
+        blank=True,
+        help_text="Группы, к которым принадлежит этот пользователь. Пользователь получит все разрешения, предоставленные каждой из своих групп.",
+        verbose_name="Группы",
+    )
+
+    user_permissions = models.ManyToManyField(
+        "auth.Permission",
+        related_name="customuser_set",
+        blank=True,
+        help_text="Специфические разрешения для этого пользователя.",
+        verbose_name="Разрешения пользователя",
+    )
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
         "username",
