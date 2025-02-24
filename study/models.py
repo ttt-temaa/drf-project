@@ -12,7 +12,7 @@ class Course(models.Model):
         blank=True,
         null=True,
         verbose_name="Превью курса",
-        help_text="Загрузите изображение для превью курса (необязательно).",
+        help_text="Загрузите изображение для превью (необязательно).",
     )
     description = models.TextField(
         verbose_name="Описание курса", help_text="Введите подробное описание курса."
