@@ -5,10 +5,10 @@ from study.views import (CourseViewSet, LessonCreateAPIView,
                          LessonDestroyAPIView, LessonListAPIView,
                          LessonRetrieveAPIView, LessonUpdateAPIView)
 
-app_name = "materials"
+app_name = "study"
 
 router = DefaultRouter()
-router.register(r"courses", CourseViewSet, basename="course")
+router.register(r"courses", CourseViewSet, basename="courses")
 
 urlpatterns = [
     path("lesson/create/", LessonCreateAPIView.as_view(), name="lesson_create"),
