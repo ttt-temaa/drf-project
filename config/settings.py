@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     "study",
     "django_filters",
     "rest_framework_simplejwt",
-    'drf_yasg'
+    "drf_yasg" "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -117,4 +117,31 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+CELERY_TIMEZONE = "UTC"
+
+CELERY_TASK_TRACK_STARTED = True
+
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = "a.borisov@yandex.ru"
+EMAIL_HOST_PASSWORD = "uikhguywnocvqljx"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
+CELERY_BEAT_SCHEDULE = {
+    "task-name": {
+        "task": "study.tasks.check_last_login",
+        "schedule": timedelta(days=1),
+    },
 }

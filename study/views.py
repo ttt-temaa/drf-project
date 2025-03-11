@@ -7,6 +7,7 @@ from study.models import Course, Lesson, Subscription
 from study.paginators import CustomPagination
 from study.serializers import (CourseDetailSerializers, CourseSerializers,
                                LessonSerializers, SubscriptionSerializer)
+from study.tasks import course_update
 from users.permissions import IsModerDRF, IsOwnerDRF
 
 
@@ -28,6 +29,11 @@ class CourseViewSet(viewsets.ModelViewSet):
         elif self.action == "destroy":
             self.permission_classes = (IsModerDRF | IsOwnerDRF,)
         return super().get_permissions()
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        course_update.delay(instance.pk)
+        return instance
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
